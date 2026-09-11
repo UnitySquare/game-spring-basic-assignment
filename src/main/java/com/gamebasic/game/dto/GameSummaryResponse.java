@@ -2,10 +2,9 @@ package com.gamebasic.game.dto;
 
 import com.gamebasic.game.entity.GamePhase;
 import com.gamebasic.game.entity.GameStatus;
-import com.gamebasic.runcard.dto.CardResponse;
 import lombok.Getter;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Getter
 public class GameSummaryResponse {
@@ -16,13 +15,19 @@ public class GameSummaryResponse {
     private final int currentFloor;
     private final GamePhase phase;
     private final GameStatus status;
+    private final int deckSize;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
-    public GameSummaryResponse(Long id, String playerName, int currentHp, int currentFloor, GamePhase phase, GameStatus status) {
+    public GameSummaryResponse(Long id, String playerName, int currentHp, int currentFloor, GamePhase phase, GameStatus status, int deckSize, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.playerName = playerName;
         this.currentHp = currentHp;
         this.currentFloor = currentFloor;
         this.phase = phase;
         this.status = status;
+        this.deckSize = deckSize;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 }
