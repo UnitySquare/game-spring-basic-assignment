@@ -1,5 +1,7 @@
 package com.gamebasic.game.service;
 
+import com.gamebasic.common.exception.GameFinishedException;
+import com.gamebasic.common.exception.GameNotFoundException;
 import com.gamebasic.game.dto.*;
 import com.gamebasic.game.entity.Game;
 import com.gamebasic.game.repository.GameRepository;
@@ -63,10 +65,7 @@ public class GameService {
     public GameDetailResponse updateProgress(Long gameId, ProgressRequest request) {
         Game game = findGame(gameId);
         if (game.isFinished()) {
-            throw new ResponseStatusException(
-                    HttpStatus.CONFLICT,
-                    "이미 종료된 게임입니다."
-            );
+            throw new GameFinishedException(gameId);
         }
         game.updateProgress(
                 request.getCurrentHp(),
@@ -115,9 +114,7 @@ public class GameService {
     // TODO (Lv 7): 게임 상세 조회. 주석을 풀고 구현하세요.
     @Transactional(readOnly = true)
     public GameDetailResponse getGame(Long gameId) {
-        Game game = gameRepository.findById(gameId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않습니다")
-        );
+        Game game = gameRepository.findById(gameId).orElseThrow(() -> new GameNotFoundException(gameId));
         List<RunCard> cards =
                 runCardRepository.findAllByGameOrderByIdAsc(game);
 
