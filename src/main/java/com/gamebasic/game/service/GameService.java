@@ -116,7 +116,7 @@ public class GameService {
     @Transactional(readOnly = true)
     public GameDetailResponse getGame(Long gameId) {
         Game game = gameRepository.findById(gameId).orElseThrow(
-                () -> new IllegalStateException("존재하지 않습니다")
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않습니다")
         );
         List<RunCard> cards =
                 runCardRepository.findAllByGameOrderByIdAsc(game);
