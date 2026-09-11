@@ -2,11 +2,13 @@ package com.gamebasic.game.controller;
 
 import com.gamebasic.game.dto.*;
 import com.gamebasic.game.service.GameService;
+import com.gamebasic.ranking.dto.RankingResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.gamebasic.ranking.service.RankingService;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GameController {
     private final GameService gameService;
+    private final RankingService rankingService;
 
     @GetMapping("/games")
     public ResponseEntity<List<GameSummaryResponse>> getGames() {
@@ -53,5 +56,10 @@ public class GameController {
     public ResponseEntity<Void> deleteGame(@PathVariable Long gameId) {
         gameService.deleteGame(gameId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/rankings")
+    public ResponseEntity<RankingResponse> getRankings() {
+        return ResponseEntity.ok(rankingService.getRankings());
     }
 }
