@@ -1,15 +1,13 @@
 package com.gamebasic.game.service;
 
-import com.gamebasic.game.dto.CreateRequest;
-import com.gamebasic.game.dto.GameDetailResponse;
-import com.gamebasic.game.dto.GameSummaryResponse;
-import com.gamebasic.game.dto.ProgressRequest;
+import com.gamebasic.game.dto.*;
 import com.gamebasic.game.entity.Game;
 import com.gamebasic.game.repository.GameRepository;
 import com.gamebasic.runcard.dto.CardResponse;
 import com.gamebasic.runcard.dto.RunCardRequest;
 import com.gamebasic.runcard.entity.RunCard;
 import com.gamebasic.runcard.repository.RunCardRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -135,6 +133,19 @@ public class GameService {
                 game.getStatus(),
                 deck
         );
+    }
+
+    @Transactional
+    public void renameGame(Long gameId, @Valid RenameRequest request) {
+        Game game = findGame(gameId);
+        game.rename(request.getPlayerName());
+    }
+
+    @Transactional
+    public void deleteGame(Long gameId) {
+        Game game = findGame(gameId);
+        runCardRepository.deleteAllByGame(game);
+        gameRepository.delete(game);
     }
 
     // TODO (Lv 8): 플레이어 이름 변경 — 변경 감지로 수정
