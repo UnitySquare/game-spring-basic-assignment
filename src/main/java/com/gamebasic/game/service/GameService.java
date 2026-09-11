@@ -62,6 +62,12 @@ public class GameService {
     @Transactional
     public GameDetailResponse updateProgress(Long gameId, ProgressRequest request) {
         Game game = findGame(gameId);
+        if (game.isFinished()) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "이미 종료된 게임입니다."
+            );
+        }
         game.updateProgress(
                 request.getCurrentHp(),
                 request.getCurrentFloor(),
