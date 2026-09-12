@@ -57,7 +57,7 @@ public class RankingService {
                                                 record.getRun().getFinalHp()
                                 ).reversed()
                         )
-                        .thenComparing(RankingSource.Record::getId)
+                        .thenComparingInt(RankingSource.Record::getId)
         );
         Set<String> playerIds = new HashSet<>();
         List<RankingSource.Record> rankedRecords = new ArrayList<>();

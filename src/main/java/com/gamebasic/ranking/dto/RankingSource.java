@@ -22,7 +22,7 @@ public class RankingSource {
 
     @Getter
     public static class Record {
-        private String id;
+        private int id;
         private Player player;
         private Run run;
         private BossFight bossFight;

@@ -12,13 +12,9 @@ import com.gamebasic.runcard.entity.RunCard;
 import com.gamebasic.runcard.repository.RunCardRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +57,7 @@ public class GameService {
 
     private Game findGame(Long gameId) {
         return gameRepository.findById(gameId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new GameNotFoundException(gameId));
     }
 
     @Transactional
@@ -112,8 +108,8 @@ public class GameService {
             GameSummaryResponse dto = new GameSummaryResponse(
                     game.getId(),
                     game.getPlayerName(),
-                    game.getCurrentFloor(),
                     game.getCurrentHp(),
+                    game.getCurrentFloor(),
                     game.getPhase(),
                     game.getStatus(),
                     (int) deckSize,
